@@ -3,9 +3,13 @@ import time
 from sklearn.feature_selection import VarianceThreshold
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
+import seaborn as sns
+sns.set()
 
 # Read the data
 start_load = time.time()
+print("\nLoading data...")
 raw_df = pd.read_csv("data/AVQ_Microdati_2021.csv")
 end_load = time.time()
 print("Time to load data: {:.2f} minutes".format((end_load - start_load) / 60))
@@ -17,6 +21,7 @@ n_obs = raw_df.shape[0]
 # The target variables are:
 # - "SPRENER" (fare attenzione a non sprecare energia elettrica)
 # - "SPRACQUA" (fare attenzione a non sprecare acqua)
+print("\nTarget variables...")
 
 target_vars = ["SPRENER", "SPRACQUA"]
 raw_df[target_vars].describe()
@@ -32,7 +37,7 @@ fig, ax = plt.subplots(1, 2, figsize=(10, 5))
 for i, var in enumerate(target_vars):
     df[var].value_counts().plot(kind="bar", ax=ax[i], title=var)
 plt.tight_layout()
-plt.show()
+plt.savefig("exploratory_analysis/target_vars_distribution_original.png")
 
 # encode the target categorical variables with strings
 #map_encode = {1: "Usually",
@@ -46,6 +51,7 @@ sprener = df.pop("SPRENER")
 spracqua = df.pop("SPRACQUA")
 
 #%% Reduce number of independent variables
+print("\nReducing number of independent variables...")
 
 # Remove variables with a high percentage of missing values, as they may not provide meaningful information. (50%)
 nulls = df.isnull().sum() / n_obs
@@ -64,7 +70,7 @@ df.drop(constant_vars, axis=1, inplace=True)
 
 # Look at the variance of each variable.
 variance = df.var()
-# get the variable with max variance
+# OUTLIER: get the variable with max variance
 max_var = variance[variance == variance.max()]
 # the var is COEFIN and it's not important for the analysis so can be removed
 df.drop("COEFIN", axis=1, inplace=True)
@@ -105,28 +111,63 @@ empty_df = df.select_dtypes(include=["object"])
 # remove those columns
 df.drop(empty_df.columns, axis=1, inplace=True)
 
+# remove columns sf9 sf11 sf13 sf14 sf15 which are correlated with variable MH
+df.drop(["SF9", "SF11", "SF13", "SF14", "SF15"], axis=1, inplace=True, errors="ignore")
+
+# columns which contains nan
+to_drop = df.columns[df.isna().any()]
+print("Columns with nan: {}".format(to_drop))
+
+# are these columns important?
+# let's see the correlation with the target variables
+corr_sprener_to_drop = df[to_drop].corrwith(sprener)
+corr_spracqua_to_drop = df[to_drop].corrwith(spracqua)
+# plot the correlation
+fig, ax = plt.subplots(1, 2, figsize=(20, 5))
+corr_sprener_to_drop.plot(kind="bar", ax=ax[0], title="SPRENER")
+corr_spracqua_to_drop.plot(kind="bar", ax=ax[1], title="SPRACQUA")
+plt.ylabel("Correlation")
+plt.xlabel("Variables with NaN to be dropped")
+plt.tight_layout()
+plt.savefig("exploratory_analysis/to_drop_correlation_with_target_vars.png")
 
 
+#%% SAVE PREPROCESSED DATA
+print("\nHere we have {} observations, {} independent variables, which {} of them presents nan values."
+      .format(df.shape[0], df.shape[1], len(to_drop)))
 
-#%% DIMENSIONALITY REDUCTION
+df_nan = df.copy()
+df_nan.to_csv("data/preprocessed_data_with_nan.csv", index=False)
 
-# select numerical features
-numerical_features = df.select_dtypes(include=["int64", "float64"])
+# remove rows with nan
+df.dropna(axis=0, inplace=True)
 
+# now we remain with 12 indipendent variables
+df.to_csv("data/preprocessed_data.csv", index=False)
+print("After dropping NaN values dataset has now {} observations.".format(df.shape[0]))
 
-#%% CLUSTERING
-from sklearn.cluster import KMeans
-num_clusters = 5
-kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-kmeans.fit(numerical_features)
+# save target variables
+sprener[df.index].to_csv("data/tar_sprener.csv", index=False)
+spracqua[df.index].to_csv("data/tar_spracqua.csv", index=False)
 
-# Add cluster labels to the original dataset
-data['cluster_label'] = kmeans.labels_
+print("\nDatasets saved.")
 
-# Now, 'data' contains an additional column 'cluster_label' indicating the cluster assignment for each sample
+#%% POST PROCESSING ANALYSIS
 
-# To see the cluster assignments and inspect the clusters:
-print(data['cluster_label'].value_counts())
+# correlation matrix
+print("\nPlotting correlation matrix...")
+# plot correlation matrix
+corr_matrix = df.corr()
+fig, ax = plt.subplots(figsize=(10, 10))
+sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", ax=ax)
+plt.tight_layout()
+plt.savefig("exploratory_analysis/correlation_matrix_preprocessed.png")
 
-# You can further analyze the clusters to identify groups of variables that are redundant
-# For example, you can calculate the mean/variance of variables within each cluster and compare them
+# class distribution of target variables
+print("\nPlotting class distribution of target variables...")
+fig, ax = plt.subplots(1, 2, figsize=(20, 5))
+sprener[df.index].value_counts().plot(kind="bar", ax=ax[0], title="SPRENER")
+spracqua[df.index].value_counts().plot(kind="bar", ax=ax[1], title="SPRACQUA")
+plt.tight_layout()
+plt.savefig("exploratory_analysis/target_vars_distribution_preprocessed.png")
+
