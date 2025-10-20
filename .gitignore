@@ -4,10 +4,24 @@
 .ropeproject
 
 # Python generates numerous files when byte compiling / installing packages
+__pycache__/
+*.py[cod]
 *.pyx
-*.pyc
 *.pyo
 *.egg-info
+
+# Virtual environments and local configuration
+.venv/
+env/
+.env
+
+# Notebook caches
+.ipynb_checkpoints/
+
+# Generated artefacts
+exploratory_analysis/*.png
+exploratory_analysis/*.pkl
+trained_models/*.png
 
 # Documentation
 about/Master_s_Thesis_Lisa_Salvetti_E_DA
