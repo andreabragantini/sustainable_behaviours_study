@@ -14,16 +14,18 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.metrics import confusion_matrix, classification_report
 #from resampling_functions import undersample_df, oversample_df
 import matplotlib.pyplot as plt
+import warnings
+# silence future warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 import seaborn as sns
 sns.set()
 
 
 # Read the data
-target = "sprener"
-#target = "spracqua"
+#target = "sprener"
+target = "spracqua"
 y = pd.read_csv("data/tar_{}.csv".format(target))
 X = pd.read_csv("data/preprocessed_data.csv")
-
 
 
 #%% MODEL FITTING: RANDOM FOREST
@@ -110,3 +112,5 @@ print('Confusion matrix:\n\n', cm)
 
 # classification report
 print("Classification report:\n\n", classification_report(y_test, y_pred))
+
+print("\nModel fitting completed in: {:.2f} minutes".format((time.time() - start) / 60))
