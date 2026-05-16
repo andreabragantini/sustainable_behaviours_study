@@ -1,3 +1,11 @@
+"""
+This script performs exploratory data analysis on the dataset, including:
+- Loading the data
+- Analyzing target variables
+- Reducing the number of independent variables by removing those with high missing values, low variance, high correlation, and low correlation with target variables.
+- Saving the preprocessed data
+- Plotting correlation matrix and class distribution of target variables after preprocessing.
+"""
 import pandas as pd
 import time
 from sklearn.feature_selection import VarianceThreshold
@@ -159,7 +167,7 @@ print("\nPlotting correlation matrix...")
 # plot correlation matrix
 corr_matrix = df.corr()
 fig, ax = plt.subplots(figsize=(10, 10))
-sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", ax=ax)
+sns.heatmap(corr_matrix, annot=False, fmt=".2f", cmap="coolwarm", ax=ax)
 plt.tight_layout()
 plt.savefig("exploratory_analysis/correlation_matrix_preprocessed.png")
 

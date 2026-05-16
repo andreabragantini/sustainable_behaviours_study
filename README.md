@@ -1,6 +1,7 @@
 # Sustainable Behaviours Study
 
-This repository contains the material needed to restart an analysis of the 2021 AVQ microdata on self-reported sustainable habits.  The aim is to rebuild the exploration, feature investigation, and modelling work from scratch, independently from the original master thesis.  The background material that accompanied the thesis (questionnaires, documentation, notes) is stored in the [`about/`](about/) folder so that you can consult it while designing the new study.
+This repository contains the material needed to restart an analysis of the 2021 AVQ microdata on self-reported sustainable habits.  The aim is to rebuild the exploration, feature investigation, and modelling work from scratch, independently from the original master thesis.  
+The background material that accompanied the thesis (questionnaires, documentation, notes) is stored in the [`about/`](about/) folder so that you can consult it while designing the new study.
 
 ## Repository layout
 

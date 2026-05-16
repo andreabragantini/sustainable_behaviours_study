@@ -1,3 +1,8 @@
+"""
+This script fits a Random Forest model to the data, evaluates its performance, and shows feature importance.
+The script also fits a Balanced Random Forest Classifier to handle class imbalance in the data.
+The script performs feature selection based on feature importance scores and fits a final Random Forest model using the selected features.
+"""
 import pandas as pd
 import numpy as np
 import time

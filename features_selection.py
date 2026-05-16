@@ -1,3 +1,7 @@
+"""
+This script performs feature selection using t-SNE for dimensionality reduction and KMeans for clustering.
+The goal is to identify groups of variables that are redundant and can be removed from the dataset.
+"""
 import pandas as pd
 import numpy as np
 import time
@@ -5,6 +9,7 @@ import matplotlib.pyplot as plt
 import pickle
 from sklearn.manifold import TSNE
 import matplotlib.cm as cm
+from pprint import pprint
 
 
 # Read the data
@@ -13,6 +18,7 @@ target = "sprener"
 y = pd.read_csv("data/tar_{}.csv".format(target))
 X = pd.read_csv("data/preprocessed_data.csv")
 
+print("Features selection for target: {}".format(target))
 
 #%% Visualization with tSNE
 '''t-distributed stochastic neighbor embedding (t-SNE) is a statistical method for visualizing high-dimensional data 
@@ -21,10 +27,10 @@ by giving each datapoint a location in a two or three-dimensional map.'''
 
 print("\nApplying t-SNE...")
 start_tsne = time.time()
-# instantiate a TSNE object
-tsne = TSNE()
-# Apply t-SNE to reduce the dimensionality of the features to 2D
-X_tsne = TSNE().fit_transform(X)
+# Optimize t-SNE parameters to reduce runtime
+print("\nApplying t-SNE with optimized parameters...")
+tsne = TSNE(n_components=2, perplexity=30, n_iter=250, init="pca", learning_rate="auto", random_state=42, n_jobs=-1)  # Added n_components, perplexity, n_iter, and random_state for faster computation
+X_tsne = tsne.fit_transform(X)
 X_tsne
 
 # coordinates to plot in 2 dimensions
@@ -34,12 +40,12 @@ vis_y = X_tsne[:, 1]
 # Create a scatter plot of the t-SNE representation of the data, with different colors for each target value
 cmap = cm.get_cmap('viridis')       # choose a colormap to use
 plt.figure(figsize=(10, 10), dpi=300)
-plt.scatter(vis_x, vis_y, c=y, s=5, cmap=cmap)
+plt.scatter(vis_x, vis_y, c=y.squeeze(), s=5, cmap=cmap)
 plt.xlabel('t-SNE Feature 1')
 plt.ylabel('t-SNE Feature 2')
-plt.title('t-SNE visualization for {}'.format(y.name))
+plt.title('t-SNE visualization for {}'.format(target))
 plt.colorbar()
-plt.savefig('exploratory_analysis/tsne_{}.png'.format(y.name))
+plt.savefig('exploratory_analysis/tsne_{}.png'.format(target))
 
 # save the TSNE model to a file.
 with open("exploratory_analysis/tsne.pkl", "wb") as f:
@@ -61,8 +67,9 @@ X['cluster_label'] = kmeans.labels_
 cluster_labels = kmeans.labels_
 # Now, 'X' contains an additional column 'cluster_label' indicating the cluster assignment for each sample
 
-# To see the cluster assignments and inspect the clusters:
-print(X['cluster_label'].value_counts())
+# To see the cluster assignments and inspect the clusters (use pretty print)
+pprint(X['cluster_label'].value_counts())
+
 
 
 # You can further analyze the clusters to identify groups of variables that are redundant
@@ -82,4 +89,6 @@ plt.xlabel('t-SNE Feature 1')
 plt.ylabel('t-SNE Feature 2')
 plt.title('KMeans Clustering Results (t-SNE)')
 plt.legend()
-plt.savefig('exploratory_analysis/tsne_clustering_{}.png'.format(y.name))
+plt.savefig('exploratory_analysis/tsne_clustering_{}.png'.format(target))
+
+print("\nKMeans clustering completed with {} clusters.".format(num_clusters))
