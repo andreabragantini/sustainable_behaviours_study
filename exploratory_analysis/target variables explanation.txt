@@ -1,0 +1,4 @@
+SPRENER		1 Pays lot of attention to energy saving behaviors
+		4 Never have energy saving behaviors
+SPRACQUA	1 Pays lot of attention to water saving behaviors
+		4 Never have energy saving behaviors
