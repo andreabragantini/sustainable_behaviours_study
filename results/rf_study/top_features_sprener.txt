@@ -1,0 +1,24 @@
+Top 20 feature importances - sprener
+=================================================================================
+rank | feature   | description                                       | importance
+-----+-----------+---------------------------------------------------+-----------
+   1 | USAGETT   | Uses single-use / disposable products             |   0.048807
+   2 | ARUMOR    | Avoids noisy driving behaviour                    |   0.044838
+   3 | ALOCAL    | Buys local food/products                          |   0.041667
+   4 | ETICHET   | Reads ingredients on food-product labels          |   0.038800
+   5 | BIOLOG    | Buys organic food/products                        |   0.030117
+   6 | TRASPO    | Chooses transport alternatives to the private car |   0.026752
+   7 | PUNTIFI10 | Trust 0-10: municipal government                  |   0.025603
+   8 | ETAMi     | Age in completed years                            |   0.024233
+   9 | PUNTIFI3  | Trust 0-10: police forces                         |   0.024208
+  10 | LIBFAM    | Number of books in the household                  |   0.023972
+  11 | FIDSCIE   | Trust 0-10: scientists                            |   0.022385
+  12 | VOTOVI    | Life satisfaction 0-10                            |   0.022051
+  13 | PUNTIFI12 | Trust 0-10: fire brigade                          |   0.021518
+  14 | AMICI     | Frequency of meeting friends in free time         |   0.020944
+  15 | FIDMED    | Trust 0-10: public health (SSN) doctors           |   0.020944
+  16 | FIDINF    | Trust 0-10: other SSN personnel                   |   0.020724
+  17 | POLITI    | How often follows Italian politics                |   0.020703
+  18 | SICURO    | Feels safe walking alone in the dark in the area  |   0.018821
+  19 | VERD      | Consumption frequency: leaf vegetables            |   0.017312
+  20 | COSPO     | Post office: preferred hours if changeable        |   0.017287

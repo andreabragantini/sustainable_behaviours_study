@@ -1,0 +1,69 @@
+Feature importance ranking - sprener
+=======================================================================================
+rank | feature    | description                                            | importance
+-----+------------+--------------------------------------------------------+-----------
+   1 | USAGETT    | Uses single-use / disposable products                  |   0.048807
+   2 | ARUMOR     | Avoids noisy driving behaviour                         |   0.044838
+   3 | ALOCAL     | Buys local food/products                               |   0.041667
+   4 | ETICHET    | Reads ingredients on food-product labels               |   0.038800
+   5 | BIOLOG     | Buys organic food/products                             |   0.030117
+   6 | TRASPO     | Chooses transport alternatives to the private car      |   0.026752
+   7 | PUNTIFI10  | Trust 0-10: municipal government                       |   0.025603
+   8 | ETAMi      | Age in completed years                                 |   0.024233
+   9 | PUNTIFI3   | Trust 0-10: police forces                              |   0.024208
+  10 | LIBFAM     | Number of books in the household                       |   0.023972
+  11 | FIDSCIE    | Trust 0-10: scientists                                 |   0.022385
+  12 | VOTOVI     | Life satisfaction 0-10                                 |   0.022051
+  13 | PUNTIFI12  | Trust 0-10: fire brigade                               |   0.021518
+  14 | AMICI      | Frequency of meeting friends in free time              |   0.020944
+  15 | FIDMED     | Trust 0-10: public health (SSN) doctors                |   0.020944
+  16 | FIDINF     | Trust 0-10: other SSN personnel                        |   0.020724
+  17 | POLITI     | How often follows Italian politics                     |   0.020703
+  18 | SICURO     | Feels safe walking alone in the dark in the area       |   0.018821
+  19 | VERD       | Consumption frequency: leaf vegetables                 |   0.017312
+  20 | COSPO      | Post office: preferred hours if changeable             |   0.017287
+  21 | BGAS       | Sugary drinks (excluding mineral water)                |   0.016535
+  22 | QTSALE     | Pays attention to salt intake                          |   0.016492
+  23 | FRUTTA     | Consumption frequency: fresh fruit                     |   0.016452
+  24 | COUSL      | ASL office: preferred hours if changeable              |   0.016273
+  25 | CORAR      | Public office: preferred hours if changeable           |   0.016016
+  26 | NCOMP      | Number of household members                            |   0.015947
+  27 | NTELCELM   | Number of mobile phones owned                          |   0.015471
+  28 | SALUMI     | Consumption frequency: cured meats                     |   0.015177
+  29 | SNACK      | Consumption frequency: salty snacks                    |   0.015080
+  30 | GCARTE     | Throws paper/cardboard in the street                   |   0.015070
+  31 | FIDU1      | Lost wallet returned by a neighbour (probability)      |   0.014739
+  32 | COV        | Consumption frequency: eggs                            |   0.014514
+  33 | GOSPO      | Post office opening hours convenient                   |   0.014286
+  34 | GORAR      | Public office opening hours convenient                 |   0.013403
+  35 | DOPFIL     | Parks the car in double file                           |   0.013111
+  36 | USOAUT     | USOAUT                                                 |   0.013001
+  37 | FIDU2      | Lost wallet returned by a police officer (probability) |   0.012842
+  38 | GOUSL      | ASL office opening hours convenient                    |   0.012639
+  39 | RELPAR     | Kinship relation to the reference person               |   0.012041
+  40 | PROIND     | Order number of the household member                   |   0.011961
+  41 | RPNUC2     | Kinship relation in household nucleus 2                |   0.011743
+  42 | ALCOL      | Alcohol intake indicator                               |   0.011482
+  43 | STCIVMi    | Marital status (reconstructed)                         |   0.010297
+  44 | PCTEMPO    | Has ever used a personal computer                      |   0.009655
+  45 | LIQUOR     | LIQUOR                                                 |   0.009340
+  46 | BFPAS      | Alcohol consumption outside meals                      |   0.009115
+  47 | LIMITA     | Health limitations lasting >= 6 months                 |   0.008370
+  48 | CAMCLI     | Worried: climate change                                |   0.008003
+  49 | UFFPOS     | Went to a post office (last 12 months)                 |   0.007299
+  50 | USOCEL     | Mobile phone use frequency                             |   0.007105
+  51 | USOSS      | Went to a health authority (ASL) to book a visit       |   0.006865
+  52 | LIBRI      | Bought books (last 3 months)                           |   0.006579
+  53 | INTTEMPO   | Internet use frequency                                 |   0.006435
+  54 | VGIOC      | Household owns a video-game console                    |   0.006432
+  55 | BANCM      | Owns a bancomat/ATM card                               |   0.006296
+  56 | INTATT28B  | Played or downloaded games (last 3 months)             |   0.006256
+  57 | INTATT30A  | Watched on-demand video (last 3 months)                |   0.006164
+  58 | INTATT7BN  | Watched streaming TV (last 3 months)                   |   0.006032
+  59 | PWEB       | Informs about politics through the internet            |   0.005890
+  60 | PCOPE_FILE | Copied or moved files between folders                  |   0.005840
+  61 | PCOPEPH    | Uploaded/copied photos                                 |   0.005546
+  62 | COM_STUD   | Used communication tools for study                     |   0.005489
+  63 | LAVPAS     | Worked in the past                                     |   0.005093
+  64 | MATDID     | Used online study material                             |   0.005075
+  65 | TELCEL     | Household owns a mobile phone                          |   0.000863

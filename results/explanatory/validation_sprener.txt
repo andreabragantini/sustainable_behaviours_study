@@ -1,0 +1,51 @@
+Phase 4 - Validation for SPRENER: permutation importance (balanced-accuracy drop) and mean |SHAP|
+Test balanced accuracy: 0.3741
+================================================================================================================================
+feature  | block     | description                                                | perm_importance | perm_sd | mean_abs_shap
+---------+-----------+------------------------------------------------------------+-----------------+---------+--------------
+ETAMi    | SOCIO     | Age in completed years                                     |          0.0322 |  0.0068 |        0.0181
+CAMCLI   | ATTITUDES | Worried: climate change                                    |          0.0168 |  0.0033 |        0.0146
+ISTRMi   | SOCIO     | Educational attainment (highest qualification)             |          0.0115 |  0.0054 |        0.0130
+STCIVMi  | SOCIO     | Marital status (reconstructed)                             |          0.0173 |  0.0041 |        0.0113
+REDPRMi  | SOCIO     | Main source of household income                            |          0.0113 |  0.0055 |        0.0077
+SMARIF   | ATTITUDES | Worried: waste production and disposal                     |          0.0101 |  0.0031 |        0.0076
+INQFIU   | ATTITUDES | Worried: pollution of rivers and seas                      |          0.0103 |  0.0021 |        0.0075
+CONDMi   | SOCIO     | Employment / professional condition                        |          0.0112 |  0.0040 |        0.0069
+IARIA    | ATTITUDES | Worried: air pollution                                     |          0.0097 |  0.0036 |        0.0066
+NCOMP    | SOCIO     | Number of household members                                |          0.0119 |  0.0023 |        0.0063
+REGMf    | SPATIAL   | Region of residence                                        |          0.0067 |  0.0024 |        0.0048
+CATASTR  | ATTITUDES | Worried: man-made catastrophes                             |          0.0026 |  0.0033 |        0.0048
+SESSO    | SOCIO     | Sex (demographic sheet; 1 = male, 2 = female)              |          0.0029 |  0.0020 |        0.0044
+FORES2   | ATTITUDES | Worried: destruction of forests                            |          0.0024 |  0.0012 |        0.0033
+DISDR    | ATTITUDES | Worried: hydrogeological instability (earthquakes, floods) |          0.0045 |  0.0031 |        0.0029
+SPORCO   | SPATIAL   | Area problem: street litter                                |          0.0040 |  0.0035 |        0.0027
+RIPMf    | SPATIAL   | Geographic macro-area of residence                         |          0.0046 |  0.0021 |        0.0026
+TIPFA2Mi | SOCIO     | Household type (reconstructed)                             |          0.0040 |  0.0009 |        0.0025
+ODSGR    | SPATIAL   | Area problem: unpleasant odours                            |          0.0055 |  0.0026 |        0.0025
+ILLSTR   | SPATIAL   | Area problem: poor street lighting                         |          0.0070 |  0.0031 |        0.0024
+CRIM     | SPATIAL   | Area problem: risk of crime                                |          0.0076 |  0.0026 |        0.0023
+PARCH    | SPATIAL   | Area problem: parking difficulties                         |          0.0062 |  0.0023 |        0.0022
+COLMP    | SPATIAL   | Area problem: poor public-transport links                  |          0.0069 |  0.0017 |        0.0022
+CONPAV   | SPATIAL   | Area problem: poor road pavement conditions                |          0.0068 |  0.0031 |        0.0022
+INQSU    | ATTITUDES | Worried: soil pollution                                    |         -0.0029 |  0.0024 |        0.0021
+INQAR    | SPATIAL   | Area problem: air pollution                                |          0.0060 |  0.0019 |        0.0019
+ESRISO2  | ATTITUDES | Worried: depletion of natural resources                    |          0.0050 |  0.0017 |        0.0019
+TRAF     | SPATIAL   | Area problem: heavy traffic                                |          0.0002 |  0.0016 |        0.0019
+RUMORE   | SPATIAL   | Area problem: noise                                        |          0.0024 |  0.0030 |        0.0018
+GODAB    | SPATIAL   | Housing tenure status (owner/tenant...)                    |          0.0023 |  0.0023 |        0.0017
+SERRA    | ATTITUDES | Worried: greenhouse effect / ozone hole                    |          0.0021 |  0.0014 |        0.0017
+ESTINZ   | ATTITUDES | Worried: extinction of animal/plant species                |         -0.0003 |  0.0008 |        0.0017
+AMRUM    | ATTITUDES | Worried: noise                                             |         -0.0007 |  0.0018 |        0.0015
+ECOSTAZ  | SPATIAL   | Ecological (recycling) stations present in the area        |          0.0015 |  0.0006 |        0.0014
+PAESAG2  | ATTITUDES | Worried: landscape degradation (excessive building)        |          0.0004 |  0.0013 |        0.0011
+INQELET2 | ATTITUDES | Worried: electromagnetic pollution                         |         -0.0006 |  0.0013 |        0.0010
+POAPO    | SPATIAL   | Area served by door-to-door waste collection               |          0.0041 |  0.0017 |        0.0010
+ALTAMB2  | ATTITUDES | Worried: other environmental problems                      |         -0.0000 |  0.0000 |        0.0000
+
+Block-level aggregation
+==============================================================
+block     | features | sum_perm_importance | sum_mean_abs_shap
+----------+----------+---------------------+------------------
+SOCIO     |        8 |              0.1024 |            0.0702
+ATTITUDES |       15 |              0.0593 |            0.0583
+SPATIAL   |       15 |              0.0719 |            0.0336

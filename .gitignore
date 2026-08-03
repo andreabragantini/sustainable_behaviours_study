@@ -20,9 +20,8 @@ env/
 .ipynb_checkpoints/
 
 # Generated artefacts
-exploratory_analysis/*.png
-exploratory_analysis/*.pkl
-trained_models/*.png
+#exploratory_analysis/*
+#results/*
 
 # Documentation
 about/Master_s_Thesis_Lisa_Salvetti_E_DA

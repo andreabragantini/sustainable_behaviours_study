@@ -1,0 +1,24 @@
+Top 20 feature importances - spracqua
+=================================================================================
+rank | feature   | description                                       | importance
+-----+-----------+---------------------------------------------------+-----------
+   1 | USAGETT   | Uses single-use / disposable products             |   0.043043
+   2 | ARUMOR    | Avoids noisy driving behaviour                    |   0.042310
+   3 | ALOCAL    | Buys local food/products                          |   0.041436
+   4 | ETICHET   | Reads ingredients on food-product labels          |   0.036810
+   5 | BIOLOG    | Buys organic food/products                        |   0.027792
+   6 | PUNTIFI10 | Trust 0-10: municipal government                  |   0.026573
+   7 | TRASPO    | Chooses transport alternatives to the private car |   0.024872
+   8 | PUNTIFI3  | Trust 0-10: police forces                         |   0.024827
+   9 | LIBFAM    | Number of books in the household                  |   0.023572
+  10 | FIDSCIE   | Trust 0-10: scientists                            |   0.023027
+  11 | ETAMi     | Age in completed years                            |   0.023019
+  12 | VOTOVI    | Life satisfaction 0-10                            |   0.022300
+  13 | PUNTIFI12 | Trust 0-10: fire brigade                          |   0.022176
+  14 | FIDMED    | Trust 0-10: public health (SSN) doctors           |   0.021964
+  15 | FIDINF    | Trust 0-10: other SSN personnel                   |   0.021535
+  16 | AMICI     | Frequency of meeting friends in free time         |   0.021401
+  17 | POLITI    | How often follows Italian politics                |   0.020769
+  18 | SICURO    | Feels safe walking alone in the dark in the area  |   0.018940
+  19 | COSPO     | Post office: preferred hours if changeable        |   0.017749
+  20 | VERD      | Consumption frequency: leaf vegetables            |   0.017205

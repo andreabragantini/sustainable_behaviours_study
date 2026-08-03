@@ -1,0 +1,42 @@
+Phase 1 - Driver set (38 features, standardised; sibling behaviour items excluded)
+==================================================================================
+block     | feature  | description                                               
+----------+----------+-----------------------------------------------------------
+SOCIO     | SESSO    | Sex (demographic sheet; 1 = male, 2 = female)             
+SOCIO     | ETAMi    | Age in completed years                                    
+SOCIO     | ISTRMi   | Educational attainment (highest qualification)            
+SOCIO     | CONDMi   | Employment / professional condition                       
+SOCIO     | REDPRMi  | Main source of household income                           
+SOCIO     | TIPFA2Mi | Household type (reconstructed)                            
+SOCIO     | STCIVMi  | Marital status (reconstructed)                            
+SOCIO     | NCOMP    | Number of household members                               
+ATTITUDES | SERRA    | Worried: greenhouse effect / ozone hole                   
+ATTITUDES | ESTINZ   | Worried: extinction of animal/plant species               
+ATTITUDES | CAMCLI   | Worried: climate change                                   
+ATTITUDES | SMARIF   | Worried: waste production and disposal                    
+ATTITUDES | AMRUM    | Worried: noise                                            
+ATTITUDES | IARIA    | Worried: air pollution                                    
+ATTITUDES | INQSU    | Worried: soil pollution                                   
+ATTITUDES | INQFIU   | Worried: pollution of rivers and seas                     
+ATTITUDES | DISDR    | Worried: hydrogeological instability (earthquakes, floods)
+ATTITUDES | CATASTR  | Worried: man-made catastrophes                            
+ATTITUDES | FORES2   | Worried: destruction of forests                           
+ATTITUDES | INQELET2 | Worried: electromagnetic pollution                        
+ATTITUDES | PAESAG2  | Worried: landscape degradation (excessive building)       
+ATTITUDES | ESRISO2  | Worried: depletion of natural resources                   
+ATTITUDES | ALTAMB2  | Worried: other environmental problems                     
+SPATIAL   | REGMf    | Region of residence                                       
+SPATIAL   | RIPMf    | Geographic macro-area of residence                        
+SPATIAL   | SPORCO   | Area problem: street litter                               
+SPATIAL   | PARCH    | Area problem: parking difficulties                        
+SPATIAL   | COLMP    | Area problem: poor public-transport links                 
+SPATIAL   | TRAF     | Area problem: heavy traffic                               
+SPATIAL   | INQAR    | Area problem: air pollution                               
+SPATIAL   | RUMORE   | Area problem: noise                                       
+SPATIAL   | CRIM     | Area problem: risk of crime                               
+SPATIAL   | ODSGR    | Area problem: unpleasant odours                           
+SPATIAL   | ILLSTR   | Area problem: poor street lighting                        
+SPATIAL   | CONPAV   | Area problem: poor road pavement conditions               
+SPATIAL   | POAPO    | Area served by door-to-door waste collection              
+SPATIAL   | ECOSTAZ  | Ecological (recycling) stations present in the area       
+SPATIAL   | GODAB    | Housing tenure status (owner/tenant...)                   

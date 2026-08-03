@@ -1,0 +1,24 @@
+Top features shared across water and energy care
+================================================================================================================================================================
+feature   | description                                       | rank_spracqua | importance_spracqua | rank_sprener | importance_sprener | present_in_both_top20 | mean_importance
+----------+---------------------------------------------------+---------------+---------------------+--------------+--------------------+-----------------------+----------------
+USAGETT   | Uses single-use / disposable products             |             1 |            0.043043 |            1 |           0.048807 |                  True |        0.045925
+ARUMOR    | Avoids noisy driving behaviour                    |             2 |            0.042310 |            2 |           0.044838 |                  True |        0.043574
+ALOCAL    | Buys local food/products                          |             3 |            0.041436 |            3 |           0.041667 |                  True |        0.041551
+ETICHET   | Reads ingredients on food-product labels          |             4 |            0.036810 |            4 |           0.038800 |                  True |        0.037805
+BIOLOG    | Buys organic food/products                        |             5 |            0.027792 |            5 |           0.030117 |                  True |        0.028955
+PUNTIFI10 | Trust 0-10: municipal government                  |             6 |            0.026573 |            7 |           0.025603 |                  True |        0.026088
+TRASPO    | Chooses transport alternatives to the private car |             7 |            0.024872 |            6 |           0.026752 |                  True |        0.025812
+PUNTIFI3  | Trust 0-10: police forces                         |             8 |            0.024827 |            9 |           0.024208 |                  True |        0.024518
+LIBFAM    | Number of books in the household                  |             9 |            0.023572 |           10 |           0.023972 |                  True |        0.023772
+ETAMi     | Age in completed years                            |            11 |            0.023019 |            8 |           0.024233 |                  True |        0.023626
+FIDSCIE   | Trust 0-10: scientists                            |            10 |            0.023027 |           11 |           0.022385 |                  True |        0.022706
+VOTOVI    | Life satisfaction 0-10                            |            12 |            0.022300 |           12 |           0.022051 |                  True |        0.022176
+PUNTIFI12 | Trust 0-10: fire brigade                          |            13 |            0.022176 |           13 |           0.021518 |                  True |        0.021847
+FIDMED    | Trust 0-10: public health (SSN) doctors           |            14 |            0.021964 |           15 |           0.020944 |                  True |        0.021454
+AMICI     | Frequency of meeting friends in free time         |            16 |            0.021401 |           14 |           0.020944 |                  True |        0.021173
+FIDINF    | Trust 0-10: other SSN personnel                   |            15 |            0.021535 |           16 |           0.020724 |                  True |        0.021130
+POLITI    | How often follows Italian politics                |            17 |            0.020769 |           17 |           0.020703 |                  True |        0.020736
+SICURO    | Feels safe walking alone in the dark in the area  |            18 |            0.018940 |           18 |           0.018821 |                  True |        0.018881
+COSPO     | Post office: preferred hours if changeable        |            19 |            0.017749 |           20 |           0.017287 |                  True |        0.017518
+VERD      | Consumption frequency: leaf vegetables            |            20 |            0.017205 |           19 |           0.017312 |                  True |        0.017258

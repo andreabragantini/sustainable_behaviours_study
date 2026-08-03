@@ -1,0 +1,44 @@
+Mean standardized (z-score) shared-feature values by sprener level - sprener
+===========================================================================================
+sprener | feature   | mean_standardized | description                                      
+--------+-----------+-------------------+--------------------------------------------------
+    1.0 | USAGETT   |           -0.0544 | Uses single-use / disposable products            
+    2.0 | USAGETT   |           -0.0476 | Uses single-use / disposable products            
+    3.0 | USAGETT   |            0.0634 | Uses single-use / disposable products            
+    4.0 | USAGETT   |            0.8934 | Uses single-use / disposable products            
+    1.0 | ARUMOR    |           -0.1268 | Avoids noisy driving behaviour                   
+    2.0 | ARUMOR    |            0.0995 | Avoids noisy driving behaviour                   
+    3.0 | ARUMOR    |            0.3668 | Avoids noisy driving behaviour                   
+    4.0 | ARUMOR    |            0.9809 | Avoids noisy driving behaviour                   
+    1.0 | ALOCAL    |           -0.1307 | Buys local food/products                         
+    2.0 | ALOCAL    |            0.0803 | Buys local food/products                         
+    3.0 | ALOCAL    |            0.3721 | Buys local food/products                         
+    4.0 | ALOCAL    |            1.1052 | Buys local food/products                         
+    1.0 | ETICHET   |           -0.1250 | Reads ingredients on food-product labels         
+    2.0 | ETICHET   |            0.0727 | Reads ingredients on food-product labels         
+    3.0 | ETICHET   |            0.3718 | Reads ingredients on food-product labels         
+    4.0 | ETICHET   |            1.0536 | Reads ingredients on food-product labels         
+    1.0 | BIOLOG    |           -0.0867 | Buys organic food/products                       
+    2.0 | BIOLOG    |            0.0035 | Buys organic food/products                       
+    3.0 | BIOLOG    |            0.2420 | Buys organic food/products                       
+    4.0 | BIOLOG    |            0.9352 | Buys organic food/products                       
+    1.0 | PUNTIFI10 |            0.0402 | Trust 0-10: municipal government                 
+    2.0 | PUNTIFI10 |           -0.0283 | Trust 0-10: municipal government                 
+    3.0 | PUNTIFI10 |           -0.1220 | Trust 0-10: municipal government                 
+    4.0 | PUNTIFI10 |           -0.3158 | Trust 0-10: municipal government                 
+    1.0 | TRASPO    |           -0.0624 | Chooses transport alternatives to the private car
+    2.0 | TRASPO    |            0.0068 | Chooses transport alternatives to the private car
+    3.0 | TRASPO    |            0.1717 | Chooses transport alternatives to the private car
+    4.0 | TRASPO    |            0.6595 | Chooses transport alternatives to the private car
+    1.0 | PUNTIFI3  |            0.0719 | Trust 0-10: police forces                        
+    2.0 | PUNTIFI3  |           -0.0964 | Trust 0-10: police forces                        
+    3.0 | PUNTIFI3  |           -0.1836 | Trust 0-10: police forces                        
+    4.0 | PUNTIFI3  |           -0.4296 | Trust 0-10: police forces                        
+    1.0 | LIBFAM    |            0.0133 | Number of books in the household                 
+    2.0 | LIBFAM    |            0.0571 | Number of books in the household                 
+    3.0 | LIBFAM    |           -0.0420 | Number of books in the household                 
+    4.0 | LIBFAM    |           -0.3644 | Number of books in the household                 
+    1.0 | ETAMi     |            0.1157 | Age in completed years                           
+    2.0 | ETAMi     |           -0.2601 | Age in completed years                           
+    3.0 | ETAMi     |           -0.4567 | Age in completed years                           
+    4.0 | ETAMi     |           -0.0766 | Age in completed years                           

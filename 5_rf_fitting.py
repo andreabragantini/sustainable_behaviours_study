@@ -38,6 +38,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score, matthews_corrcoef
 from sklearn.model_selection import train_test_split
 
+from feature_descriptions import describe, render_table
+
 
 # Keep the console output readable.
 warnings.simplefilter(action="ignore", category=FutureWarning)
@@ -49,14 +51,14 @@ warnings.filterwarnings(
 sns.set_theme(style="whitegrid")
 
 
-DATA_PATH = Path("data/preprocessed_data.csv")
+DATA_PATH = Path("data/preprocessed_data_reduced.csv")
 TARGETS = ["spracqua", "sprener"]
-MODELS_DIR = Path("trained_models")
-MODELS_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_DIR = Path("results") / "rf_study"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 TEST_SIZE = 0.30
 RANDOM_STATE = 42
-TOP_FEATURES_TO_SAVE = 20
-TOP_FEATURES_TO_PLOT = 60
+TOP_FEATURES_TO_SAVE = 20   
+TOP_FEATURES_TO_PLOT = 10
 PROFILE_FEATURES_TO_PLOT = 6
 HEATMAP_FEATURES_TO_PLOT = 10
 
@@ -87,14 +89,15 @@ def load_target(target_name):
 
 
 def summarize_target(y, target_name):
-    """Save the class distribution so the baseline accuracy is easy to interpret."""
+    """Save the class distribution as a TXT table so the baseline is easy to read."""
     distribution = pd.DataFrame(
         {
             "count": y.value_counts().sort_index(),
             "proportion": y.value_counts(normalize=True).sort_index(),
         }
     )
-    distribution.to_csv(MODELS_DIR / "class_distribution_{}.csv".format(target_name))
+    distribution.index.name = "target_level"
+    distribution = distribution.reset_index()
     return distribution
 
 
@@ -147,18 +150,35 @@ def evaluate_models(X_train, X_test, y_train, y_test):
 
 
 def save_feature_importance_outputs(importance_series, target_name):
-    """Save CSV tables and two easy-to-read feature-importance plots."""
+    """Save pretty TXT tables of the full importance ranking and of the top
+    features (with plain-language descriptions), plus two importance plots."""
     importance_series = importance_series.sort_values(ascending=False)
-    importance_series.to_csv(
-        MODELS_DIR / "feature_importance_{}.csv".format(target_name),
-        header=["importance"],
-    )
 
-    top_features = importance_series.head(TOP_FEATURES_TO_SAVE).reset_index()
-    top_features.columns = ["feature", "importance"]
-    top_features["rank"] = range(1, len(top_features) + 1)
-    top_features = top_features[["rank", "feature", "importance"]]
-    top_features.to_csv(MODELS_DIR / "top_features_{}.csv".format(target_name), index=False)
+    importance_table = importance_series.reset_index()
+    importance_table.columns = ["feature", "importance"]
+    importance_table["rank"] = range(1, len(importance_table) + 1)
+    importance_table["description"] = importance_table["feature"].map(describe)
+    importance_table = importance_table[["rank", "feature", "description", "importance"]]
+    with (OUTPUT_DIR / "feature_importance_{}.txt".format(target_name)).open("w", encoding="utf-8") as fh:
+        fh.write(
+            render_table(
+                importance_table,
+                title="Feature importance ranking - {}".format(target_name),
+                formats={"importance": ".6f"},
+            )
+            + "\n"
+        )
+
+    top_features = importance_table.head(TOP_FEATURES_TO_SAVE).reset_index(drop=True)
+    with (OUTPUT_DIR / "top_features_{}.txt".format(target_name)).open("w", encoding="utf-8") as fh:
+        fh.write(
+            render_table(
+                top_features,
+                title="Top {} feature importances - {}".format(TOP_FEATURES_TO_SAVE, target_name),
+                formats={"importance": ".6f"},
+            )
+            + "\n"
+        )
 
     full_plot = importance_series.sort_values(ascending=True)
     fig, ax = plt.subplots(figsize=(12, 15))
@@ -167,7 +187,7 @@ def save_feature_importance_outputs(importance_series, target_name):
     ax.set_ylabel("Feature")
     ax.set_title("Feature importance - {}".format(target_name))
     plt.tight_layout()
-    plt.savefig(MODELS_DIR / "features_importance_{}.png".format(target_name), dpi=300)
+    plt.savefig(OUTPUT_DIR / "features_importance_full_{}.png".format(target_name), dpi=300)
     plt.close(fig)
 
     top_plot = importance_series.head(TOP_FEATURES_TO_PLOT).sort_values(ascending=True)
@@ -178,7 +198,7 @@ def save_feature_importance_outputs(importance_series, target_name):
     ax.set_ylabel("Feature")
     ax.set_title("Top {} feature importances - {}".format(TOP_FEATURES_TO_PLOT, target_name))
     plt.tight_layout()
-    plt.savefig(MODELS_DIR / "features_importance_top60_{}.png".format(target_name), dpi=300)
+    plt.savefig(OUTPUT_DIR / "features_importance_selected_{}.png".format(target_name), dpi=300)
     plt.close(fig)
 
     return top_features
@@ -212,7 +232,7 @@ def save_shared_importance_plot(shared):
     ax.set_ylabel("Importance for SPRENER")
     ax.set_title("Shared feature importance across water and energy care")
     plt.tight_layout()
-    plt.savefig(MODELS_DIR / "shared_feature_importance_scatter.png", dpi=300)
+    plt.savefig(OUTPUT_DIR / "shared_feature_importance_scatter.png", dpi=300)
     plt.close(fig)
 
 
@@ -221,14 +241,38 @@ def save_descriptive_feature_plots(X, y, target_name, shared_features):
 
     These plots are easier to discuss than raw feature importance because they show how
     average feature values change across target levels 1, 2, 3, and 4.
+
+    The features live on very different scales (e.g. 0-4 frequency items vs 0-10
+    trust scales), so each feature is z-score standardised before averaging.  The
+    group means are then comparable across features and can share a single colorbar
+    in the heatmap without the larger-scale features dominating it.
     """
     selected = [feature for feature in shared_features if feature in X.columns]
     if not selected:
         return
 
     plot_df = pd.concat([y, X[selected]], axis=1)
-    group_means = plot_df.groupby(y.name)[selected].mean().sort_index()
-    group_means.to_csv(MODELS_DIR / "descriptive_group_means_{}.csv".format(target_name))
+    scaled = (plot_df[selected] - plot_df[selected].mean()) / plot_df[selected].std()
+    scaled_df = pd.concat([y, scaled], axis=1)
+    group_means = scaled_df.groupby(y.name)[selected].mean().sort_index()
+
+    means_long = group_means.reset_index().melt(
+        id_vars=y.name,
+        var_name="feature",
+        value_name="mean_standardized",
+    )
+    means_long["description"] = means_long["feature"].map(describe)
+    with (OUTPUT_DIR / "descriptive_group_means_{}.txt".format(target_name)).open("w", encoding="utf-8") as fh:
+        fh.write(
+            render_table(
+                means_long,
+                title="Mean standardized (z-score) shared-feature values by {} level - {}".format(
+                    y.name, target_name
+                ),
+                formats={"mean_standardized": ".4f"},
+            )
+            + "\n"
+        )
 
     # Line profile for the most important shared features.
     profile_features = selected[:PROFILE_FEATURES_TO_PLOT]
@@ -249,10 +293,10 @@ def save_descriptive_feature_plots(X, y, target_name, shared_features):
         ax=ax,
     )
     ax.set_xlabel("Target level (1 = high care, 4 = no care)")
-    ax.set_ylabel("Mean standardized feature value")
+    ax.set_ylabel("Mean standardized (z-score) value")
     ax.set_title("Top shared behavioural profiles by {}".format(target_name))
     plt.tight_layout()
-    plt.savefig(MODELS_DIR / "shared_feature_profiles_{}.png".format(target_name), dpi=300)
+    plt.savefig(OUTPUT_DIR / "shared_feature_profiles_{}.png".format(target_name), dpi=300)
     plt.close(fig)
 
     # Heatmap for a slightly wider set of shared features.
@@ -262,9 +306,9 @@ def save_descriptive_feature_plots(X, y, target_name, shared_features):
     sns.heatmap(heatmap_data.T, cmap="RdYlBu_r", center=0, ax=ax)
     ax.set_xlabel("Target level (1 = high care, 4 = no care)")
     ax.set_ylabel("Feature")
-    ax.set_title("Mean shared-feature values across {} levels".format(target_name))
+    ax.set_title("Mean standardized shared-feature values across {} levels".format(target_name))
     plt.tight_layout()
-    plt.savefig(MODELS_DIR / "shared_feature_heatmap_{}.png".format(target_name), dpi=300)
+    plt.savefig(OUTPUT_DIR / "shared_feature_heatmap_{}.png".format(target_name), dpi=300)
     plt.close(fig)
 
 
@@ -288,7 +332,21 @@ def analyse_target(X, target_name):
     )
 
     comparison, fitted_models = evaluate_models(X_train, X_test, y_train, y_test)
-    comparison.to_csv(MODELS_DIR / "model_comparison_{}.csv".format(target_name), index=False)
+    with (OUTPUT_DIR / "model_comparison_{}.txt".format(target_name)).open("w", encoding="utf-8") as fh:
+        fh.write(
+            render_table(
+                comparison,
+                title="Model comparison - {}".format(target_name),
+                formats={
+                    "accuracy": ".4f",
+                    "balanced_accuracy": ".4f",
+                    "f1_macro": ".4f",
+                    "f1_weighted": ".4f",
+                    "mcc": ".4f",
+                },
+            )
+            + "\n"
+        )
     print("\nModel comparison:\n{}".format(comparison))
 
     # The balanced forest is used as the main screening model because classes are imbalanced.
@@ -326,23 +384,50 @@ def build_shared_feature_summary(results_by_target):
         columns={
             "rank": "rank_spracqua",
             "importance": "importance_spracqua",
+            "description": "description_spracqua",
         }
     )
     sprener_top = sprener_top.rename(
         columns={
             "rank": "rank_sprener",
             "importance": "importance_sprener",
+            "description": "description_sprener",
         }
     )
 
     shared = spracqua_top.merge(sprener_top, on="feature", how="outer")
+    shared["description"] = shared["description_spracqua"].fillna(shared["description_sprener"])
     shared["present_in_both_top20"] = shared["rank_spracqua"].notna() & shared["rank_sprener"].notna()
     shared["mean_importance"] = shared[["importance_spracqua", "importance_sprener"]].mean(axis=1)
     shared = shared.sort_values(
         by=["present_in_both_top20", "mean_importance"],
         ascending=[False, False],
     )
-    shared.to_csv(MODELS_DIR / "shared_top_features.csv", index=False)
+    shared = shared[
+        [
+            "feature",
+            "description",
+            "rank_spracqua",
+            "importance_spracqua",
+            "rank_sprener",
+            "importance_sprener",
+            "present_in_both_top20",
+            "mean_importance",
+        ]
+    ]
+    with (OUTPUT_DIR / "shared_top_features.txt").open("w", encoding="utf-8") as fh:
+        fh.write(
+            render_table(
+                shared,
+                title="Top features shared across water and energy care",
+                formats={
+                    "importance_spracqua": ".6f",
+                    "importance_sprener": ".6f",
+                    "mean_importance": ".6f",
+                },
+            )
+            + "\n"
+        )
     return shared
 
 
@@ -375,37 +460,46 @@ if __name__ == "__main__":
 
 
 # ---------------------------------------------------------------------------
-# Final considerations on procedure and results
-# ---------------------------------------------------------------------------
 # 1) Procedure used in this script:
+# ---------------------------------------------------------------------------
 #    - For each target, the script first checks class imbalance and compares a dummy baseline,
 #      a plain Random Forest, and a Balanced Random Forest.
 #    - This predictive comparison is only a diagnostic step.
 #    - The main analytical output is the feature-importance ranking from the Balanced RF.
 #    - After analysing both targets, the script builds one shared table of top features.
 #
-# 2) Why this procedure fits the study goal:
+# Why this procedure fits the study goal:
 #    - The goal is to understand which behaviours and characteristics are associated with
 #      carefulness toward water and energy saving.
 #    - RF is useful here as a variable-screening device: it helps detect which predictors
 #      matter most in separating low-care from high-care respondents.
 #    - This is more useful for the study than maximizing predictive accuracy.
 #
-# 3) Main result found so far in this project:
+# ---------------------------------------------------------------------------
+# 2) Main results found so far in this project:
+# ---------------------------------------------------------------------------
 #    - The two targets show a strong overlap in their top-ranked features.
 #    - Variables such as USAGETT, ARUMOR, ALOCAL, ETICHET, BIOLOG, TRASPO,
-#      PUNTIFI10, PUNTIFI3, ETAMi, and LIBFAM appear near the top for both targets.
-#    - This suggests that water-saving care and energy-saving care belong to a broader
+#      PUNTIFI10, PUNTIFI3, ETAMi, and LIBFAM appear near the top for both targets. 
+#      This suggests that water-saving care and energy-saving care belong to a broader
 #      behavioural profile rather than being isolated attitudes.
+#    - USAGETT is the one exception: unlike the other top behaviour items, it moves
+#      against the good-behaviour gradient, while the two similarly-phrased negative
+#      items (GCARTE, DOPFIL) correlate negatively with the targets as expected.
 #
-# 4) How these outputs should be used in the thesis or report:
-#    - Use top_features_<target>.csv to identify the most relevant correlates.
-#    - Use shared_top_features.csv to focus on behaviours that matter for both targets.
+# How these outputs should be used in the thesis or report:
+#    - Use top_features_<target>.txt to identify the most relevant correlates
+#      (with plain-language descriptions of each feature).
+#    - Use shared_top_features.txt to focus on behaviours that matter for both targets.
 #    - Use shared_feature_profiles_<target>.png and shared_feature_heatmap_<target>.png
 #      to discuss how the top shared variables change across target levels 1, 2, 3, and 4.
+#      These plots use z-score standardised feature values so features with different
+#      scales (0-4 vs 0-10 items) can be compared on the same axis/colorbar.
 #    - The next best step is an ordinal and more interpretable follow-up model.
 #
-# 5) Cautions:
+# ---------------------------------------------------------------------------
+# 3) Cautions:
+# ---------------------------------------------------------------------------
 #    - Feature importance is associative, not causal.
 #    - Correlated predictors can share or distort importance.
 #    - RF importance does not tell whether a variable is positively or negatively related

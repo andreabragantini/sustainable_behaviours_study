@@ -1,0 +1,16 @@
+Most distinctive cluster features (standardized means)
+========================================================================================================
+feature     | description                                            | cluster_0 | cluster_1 | cluster_2
+------------+--------------------------------------------------------+-----------+-----------+----------
+INTTEMPO    | Internet use frequency                                 |     -0.52 |     -0.55 |      1.50
+PCTEMPO     | Has ever used a personal computer                      |     -0.06 |     -0.71 |      1.06
+PCOPE_FILE  | Copied or moved files between folders                  |     -0.27 |      0.80 |     -0.71
+PCOPEWO     | Used word-processing software (last 3 months)          |     -0.77 |      0.32 |      0.66
+ETAMi       | Age in completed years                                 |     -0.30 |     -0.38 |      0.95
+PWEB        | Informs about politics through the internet            |     -0.26 |      0.75 |     -0.65
+INTATT11    | Used online banking services (last 3 months)           |     -0.72 |      0.27 |      0.66
+PCOPE_SF    | Installed/loaded software or apps (last 3 months)      |     -0.73 |      0.32 |      0.60
+PCOPE_PASTE | Copied/pasted content between files                    |     -0.74 |      0.36 |      0.56
+INTATT30A   | Watched on-demand video (last 3 months)                |     -0.15 |      0.65 |     -0.68
+INTATT16    | Searched for info on goods or services (last 3 months) |     -0.68 |      0.31 |      0.55
+PCOPEPH     | Uploaded/copied photos                                 |     -0.23 |      0.66 |     -0.57

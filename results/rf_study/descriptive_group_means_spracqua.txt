@@ -1,0 +1,44 @@
+Mean standardized (z-score) shared-feature values by spracqua level - spracqua
+============================================================================================
+spracqua | feature   | mean_standardized | description                                      
+---------+-----------+-------------------+--------------------------------------------------
+     1.0 | USAGETT   |           -0.0465 | Uses single-use / disposable products            
+     2.0 | USAGETT   |           -0.0700 | Uses single-use / disposable products            
+     3.0 | USAGETT   |            0.0627 | Uses single-use / disposable products            
+     4.0 | USAGETT   |            0.7701 | Uses single-use / disposable products            
+     1.0 | ARUMOR    |           -0.1368 | Avoids noisy driving behaviour                   
+     2.0 | ARUMOR    |            0.1039 | Avoids noisy driving behaviour                   
+     3.0 | ARUMOR    |            0.3536 | Avoids noisy driving behaviour                   
+     4.0 | ARUMOR    |            0.9230 | Avoids noisy driving behaviour                   
+     1.0 | ALOCAL    |           -0.1353 | Buys local food/products                         
+     2.0 | ALOCAL    |            0.0761 | Buys local food/products                         
+     3.0 | ALOCAL    |            0.3426 | Buys local food/products                         
+     4.0 | ALOCAL    |            1.0191 | Buys local food/products                         
+     1.0 | ETICHET   |           -0.1383 | Reads ingredients on food-product labels         
+     2.0 | ETICHET   |            0.1006 | Reads ingredients on food-product labels         
+     3.0 | ETICHET   |            0.3391 | Reads ingredients on food-product labels         
+     4.0 | ETICHET   |            0.9733 | Reads ingredients on food-product labels         
+     1.0 | BIOLOG    |           -0.0966 | Buys organic food/products                       
+     2.0 | BIOLOG    |            0.0087 | Buys organic food/products                       
+     3.0 | BIOLOG    |            0.2627 | Buys organic food/products                       
+     4.0 | BIOLOG    |            0.8710 | Buys organic food/products                       
+     1.0 | PUNTIFI10 |            0.0471 | Trust 0-10: municipal government                 
+     2.0 | PUNTIFI10 |           -0.0471 | Trust 0-10: municipal government                 
+     3.0 | PUNTIFI10 |           -0.1081 | Trust 0-10: municipal government                 
+     4.0 | PUNTIFI10 |           -0.2939 | Trust 0-10: municipal government                 
+     1.0 | TRASPO    |           -0.0732 | Chooses transport alternatives to the private car
+     2.0 | TRASPO    |            0.0262 | Chooses transport alternatives to the private car
+     3.0 | TRASPO    |            0.1955 | Chooses transport alternatives to the private car
+     4.0 | TRASPO    |            0.5934 | Chooses transport alternatives to the private car
+     1.0 | PUNTIFI3  |            0.0770 | Trust 0-10: police forces                        
+     2.0 | PUNTIFI3  |           -0.1012 | Trust 0-10: police forces                        
+     3.0 | PUNTIFI3  |           -0.1897 | Trust 0-10: police forces                        
+     4.0 | PUNTIFI3  |           -0.3755 | Trust 0-10: police forces                        
+     1.0 | LIBFAM    |            0.0251 | Number of books in the household                 
+     2.0 | LIBFAM    |            0.0338 | Number of books in the household                 
+     3.0 | LIBFAM    |           -0.0644 | Number of books in the household                 
+     4.0 | LIBFAM    |           -0.3622 | Number of books in the household                 
+     1.0 | ETAMi     |            0.0982 | Age in completed years                           
+     2.0 | ETAMi     |           -0.2349 | Age in completed years                           
+     3.0 | ETAMi     |           -0.3248 | Age in completed years                           
+     4.0 | ETAMi     |            0.0103 | Age in completed years                           

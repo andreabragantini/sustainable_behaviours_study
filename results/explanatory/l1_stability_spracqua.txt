@@ -1,0 +1,43 @@
+Phase 2 - L1 stability selection for SPRACQUA
+60 bootstrap resamples, penalty C=0.010 (see CV landscape in the console)
+=======================================================================================================================
+feature  | block     | description                                                | selection_frequency
+---------+-----------+------------------------------------------------------------+--------------------
+SESSO    | SOCIO     | Sex (demographic sheet; 1 = male, 2 = female)              |               1.000
+AMRUM    | ATTITUDES | Worried: noise                                             |               1.000
+RIPMf    | SPATIAL   | Geographic macro-area of residence                         |               1.000
+REGMf    | SPATIAL   | Region of residence                                        |               1.000
+ESRISO2  | ATTITUDES | Worried: depletion of natural resources                    |               1.000
+ETAMi    | SOCIO     | Age in completed years                                     |               1.000
+FORES2   | ATTITUDES | Worried: destruction of forests                            |               1.000
+CATASTR  | ATTITUDES | Worried: man-made catastrophes                             |               1.000
+DISDR    | ATTITUDES | Worried: hydrogeological instability (earthquakes, floods) |               1.000
+INQFIU   | ATTITUDES | Worried: pollution of rivers and seas                      |               1.000
+INQSU    | ATTITUDES | Worried: soil pollution                                    |               1.000
+IARIA    | ATTITUDES | Worried: air pollution                                     |               1.000
+INQELET2 | ATTITUDES | Worried: electromagnetic pollution                         |               1.000
+SMARIF   | ATTITUDES | Worried: waste production and disposal                     |               1.000
+ESTINZ   | ATTITUDES | Worried: extinction of animal/plant species                |               1.000
+SERRA    | ATTITUDES | Worried: greenhouse effect / ozone hole                    |               1.000
+NCOMP    | SOCIO     | Number of household members                                |               1.000
+STCIVMi  | SOCIO     | Marital status (reconstructed)                             |               1.000
+REDPRMi  | SOCIO     | Main source of household income                            |               1.000
+CONDMi   | SOCIO     | Employment / professional condition                        |               1.000
+CAMCLI   | ATTITUDES | Worried: climate change                                    |               1.000
+TRAF     | SPATIAL   | Area problem: heavy traffic                                |               0.967
+TIPFA2Mi | SOCIO     | Household type (reconstructed)                             |               0.950
+ECOSTAZ  | SPATIAL   | Ecological (recycling) stations present in the area        |               0.950
+ODSGR    | SPATIAL   | Area problem: unpleasant odours                            |               0.950
+PAESAG2  | ATTITUDES | Worried: landscape degradation (excessive building)        |               0.883
+SPORCO   | SPATIAL   | Area problem: street litter                                |               0.817
+CONPAV   | SPATIAL   | Area problem: poor road pavement conditions                |               0.750
+GODAB    | SPATIAL   | Housing tenure status (owner/tenant...)                    |               0.700
+ALTAMB2  | ATTITUDES | Worried: other environmental problems                      |               0.600
+PARCH    | SPATIAL   | Area problem: parking difficulties                         |               0.450
+ISTRMi   | SOCIO     | Educational attainment (highest qualification)             |               0.367
+RUMORE   | SPATIAL   | Area problem: noise                                        |               0.233
+ILLSTR   | SPATIAL   | Area problem: poor street lighting                         |               0.167
+INQAR    | SPATIAL   | Area problem: air pollution                                |               0.133
+CRIM     | SPATIAL   | Area problem: risk of crime                                |               0.117
+POAPO    | SPATIAL   | Area served by door-to-door waste collection               |               0.117
+COLMP    | SPATIAL   | Area problem: poor public-transport links                  |               0.017
