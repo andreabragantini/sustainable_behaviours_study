@@ -2,10 +2,10 @@
 
 Pipeline goals:
 1) Start from the preprocessed feature matrix produced by script 1.
-2) Rank features by association with each target variable.
-3) Keep top features per target and merge the two sets.
+2) Rank features by association with each target variable (ANOVA F-score).
+3) Keep top features per target (settings at the top of the script) and merge the two sets.
 4) Remove highly correlated duplicates to reduce redundancy.
-5) Save a compact dataset for downstream analysis.
+5) Save a reduced dataset for downstream analysis.
 """
 
 from pathlib import Path
@@ -19,15 +19,15 @@ from sklearn.feature_selection import f_classif
 # Configuration
 # -----------------------------
 INPUT_WITH_NAN = Path("data/preprocessed_data_with_nan.csv")
-INPUT_NO_NAN = Path("data/preprocessed_data.csv")
+INPUT_NO_NAN = Path("data/preprocessed_data_imputed.csv")
 
 TARGET_FILES = {
 	"sprener": Path("data/tar_sprener.csv"),
 	"spracqua": Path("data/tar_spracqua.csv"),
 }
 
-OUTPUT_FEATURES = Path("data/preprocessed_data.csv")
-OUTPUT_REPORT = Path("exploratory_analysis/feature_selection_summary.csv")
+OUTPUT_FEATURES = Path("data/preprocessed_data_reduced.csv")
+OUTPUT_REPORT = Path("exploratory_analysis/reduced_dataset_feature_selection_summary.csv")
 
 MAX_FEATURES_PER_TARGET = 60
 MISSING_COL_THRESHOLD = 0.50
@@ -35,14 +35,15 @@ HIGH_CORR_THRESHOLD = 0.90
 
 
 def load_feature_matrix() -> pd.DataFrame:
-	"""Load feature matrix; prefer file with NaN to keep full candidate set."""
-	if INPUT_WITH_NAN.exists():
-		print(f"Loading features from: {INPUT_WITH_NAN}")
-		return pd.read_csv(INPUT_WITH_NAN)
+	"""Load feature matrix; prefer file with no NaN already worked on."""
 
 	if INPUT_NO_NAN.exists():
 		print(f"Loading features from: {INPUT_NO_NAN}")
 		return pd.read_csv(INPUT_NO_NAN)
+	
+	if INPUT_WITH_NAN.exists():
+		print(f"Loading features from: {INPUT_WITH_NAN}")
+		return pd.read_csv(INPUT_WITH_NAN)
 
 	raise FileNotFoundError(
 		"No feature file found. Run 1_data_ingestion_first_dim_reduction.py first."
@@ -112,14 +113,26 @@ def remove_highly_correlated(
 		if max_corr_with_selected <= threshold:
 			selected.append(col)
 
+	# print the removed correlated features for debugging
+	removed_features = set(ordered_features) - set(selected)
+	if removed_features:
+		print(f"Removed {len(removed_features)} highly correlated features:")
+		for f in removed_features:
+			print(f"  - {f}")
+	else:
+		print("No highly correlated features were removed.")
+
 	return selected
 
 
 def main() -> None:
 	print("Target-aware feature selection started...")
 
+	# Load data and targets.
 	X_raw = load_feature_matrix()
 	targets = load_targets()
+	print(f"\nInitial features: {X_raw.shape[1]}")
+
 
 	# Basic row alignment checks.
 	n_rows = len(X_raw)
@@ -127,10 +140,13 @@ def main() -> None:
 		if len(y) != n_rows:
 			raise ValueError(f"Target {name} has {len(y)} rows but X has {n_rows} rows.")
 
+	# Prepare features: keep numeric columns, drop low-information ones, impute missing values.
 	X = prepare_features(X_raw)
 	print(f"Candidate features after cleaning: {X.shape[1]}")
 
-	# Score by each target and keep top-k per target.
+	# ANOVA:Score by each target and keep top-k per target.
+	print(f"\nScoring features by ANOVA F-score per target ...")
+	print(f"Keeping at most {MAX_FEATURES_PER_TARGET} features per target.")
 	target_scores: dict[str, pd.Series] = {}
 	candidate_union: set[str] = set()
 	for name, y in targets.items():
@@ -149,12 +165,16 @@ def main() -> None:
 	for score_series in target_scores.values():
 		combined_score = combined_score.add(score_series.reindex(candidates).fillna(0.0), fill_value=0.0)
 
+	# Remove highly correlated features to reduce redundancy.
+	print(f"\nRemoving highly correlated features (threshold: {HIGH_CORR_THRESHOLD})...")	
 	ordered_candidates = combined_score.sort_values(ascending=False).index.tolist()
 	final_features = remove_highly_correlated(X, ordered_candidates, HIGH_CORR_THRESHOLD)
 
+	# Save the final selected feature matrix and a report of the selection process.
 	X_selected = X[final_features].copy()
 	X_selected.to_csv(OUTPUT_FEATURES, index=False)
 
+	# REPORT: save a summary of the feature selection process, including scores and selection status.
 	report = pd.DataFrame({"feature": X.columns})
 	report["f_score_sprener"] = target_scores["sprener"].reindex(report["feature"]).values
 	report["f_score_spracqua"] = target_scores["spracqua"].reindex(report["feature"]).values
@@ -167,8 +187,6 @@ def main() -> None:
 	report.to_csv(OUTPUT_REPORT, index=False)
 
 	print("\nFeature selection completed.")
-	print(f"Initial features: {X_raw.shape[1]}")
-	print(f"Usable numeric features: {X.shape[1]}")
 	print(f"Selected features: {len(final_features)}")
 	print(f"Saved selected matrix to: {OUTPUT_FEATURES}")
 	print(f"Saved selection report to: {OUTPUT_REPORT}")
