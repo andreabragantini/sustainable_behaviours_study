@@ -15,12 +15,12 @@ import seaborn as sns
 sns.set_theme(style="whitegrid")
 
 
-FEATURES_PATH = Path("data/preprocessed_data.csv")
+FEATURES_PATH = Path("data/preprocessed_data_imputed.csv")
 TARGET_PATHS = {
 	"sprener": Path("data/tar_sprener.csv"),
 	"spracqua": Path("data/tar_spracqua.csv"),
 }
-FEATURE_REPORT_PATH = Path("exploratory_analysis/feature_selection_summary.csv")
+FEATURE_REPORT_PATH = Path("exploratory_analysis/reduced_dataset_feature_selection_summary.csv")
 OUTPUT_DIR = Path("exploratory_analysis")
 
 TOP_FEATURES_PER_TARGET = 10
