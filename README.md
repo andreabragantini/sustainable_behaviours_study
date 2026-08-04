@@ -40,9 +40,11 @@ requirements.txt
 README.md
 ```
 
+Note: For convenience, result directories (e.g., plots/, outputs/, etc.) have also been committed to the repository to facilitate result inspection, despite this going against the usual best practice of excluding generated outputs from version control.
 
 ## Data
 
+The data are publicly available and have already been published in the repository. 
 The analysis uses the 2021 AVQ survey microdata in [data/AVQ_Microdati_2021.csv](data/AVQ_Microdati_2021.csv). Script 1 builds the processed datasets used by every downstream step:
 
 - [data/preprocessed_data_with_nan.csv](data/preprocessed_data_with_nan.csv): reduced feature matrix **before** imputation (299 features, contains NaN)
@@ -62,12 +64,12 @@ Data are splitted into four semantically meaningful variable blocks, that are pr
 ## Output Policy
 
 - **Data** (memberships, preprocessed matrices, raw scores) is written as **CSV**.
-- **Results** (tables for the report) are written as **pretty-printed TXT** files so they can be read directly.
+- **Results** (tables for the report) are written as **TXT tables** files so they can be read directly.
 - **Plots** are written as **PNG**.
 
 ## Workflow
 
-The project is organized as a linear pipeline.
+The project is organized as a simple linear pipeline.
 
 1. [1_data_ingestion_first_dim_reduction.py](1_data_ingestion_first_dim_reduction.py)
    Loads the raw AVQ data, binarises the checklist batteries, protects the four goal-aligned blocks, and produces the reduced feature matrices and targets.
@@ -103,12 +105,12 @@ The [exploratory_analysis/](exploratory_analysis/) folder contains descriptive p
 - `clustering/cluster_profiles.txt` – most distinctive features per cluster (with plain-language descriptions)
 - `clustering/cluster_<target>_counts.txt` / `_proportions.txt` – target response distribution per cluster
 
-Note: **Clustering adds little about sustainability.** The respondent clustering (script 4) finds only soft clusters (silhouette 0.03 even at the best k) that separate people by age and digital/internet usage, while the two targets stay almost flat across clusters (means ~1.4-1.5 everywhere). No "sustainable-citizen" segment emerges, which is consistent with sustainability being a diffuse, cross-cutting disposition rather than a defining profile.
+Note: **Clustering** adds little information to the project. The respondent clustering (script 4) finds only soft clusters (silhouette 0.03 even at the best k) that separate people by age and digital/internet usage, while the two targets stay almost flat across clusters (means ~1.4-1.5 everywhere). No "sustainable-citizen" segment emerges, which is consistent with later findings of sustainability being a diffuse, cross-cutting disposition rather than a defining profile.
 
 
 ### Random-forest outputs (script 5)
 
-Script 5 trains Random Forest and Balanced Random Forest classifiers to predict each target (care for energy / water) from the 65-feature matrix. A random forest is an ensemble of many decision trees; "feature importance" measures how much each variable helps the trees separate the respondents. The Balanced Random Forest re-weights the classes so that the rare "no care" respondents (level 4) are not ignored.
+Script 5 trains Random Forest and Balanced Random Forest classifiers to predict each target (care for energy / water) from the reduced-feature matrix. A random forest is an ensemble of many decision trees; "feature importance" measures how much each variable helps the trees separate the respondents. The Balanced Random Forest re-weights the classes so that the rare "no care" respondents (level 4 of the target variables) are not ignored.
 
 All tables are pretty-printed TXT in [results/rf_study/](results/rf_study/):
 
@@ -120,20 +122,22 @@ All tables are pretty-printed TXT in [results/rf_study/](results/rf_study/):
 - `shared_top_features.txt` – the features that rank high for BOTH targets, side by side.
 - `features_importance_*.png`, `shared_feature_*.png` – visual versions of the tables above.
 
-What this stage CAN and CANNOT tell you: importance ranks the variables, but it does not say whether a variable increases or decreases care, nor how significant the effect is. That is exactly what script 6 adds.
+What this stage CAN and CANNOT tell you: importance ranks the variables, but it does not say whether a variable increases or decreases care, nor how significant the effect is. That is exactly what the next and final section adds.
 
 ### Explanatory-model outputs (script 6)
 
-This section of the project wants to add a step to the analysis of the dataset and to the DIRECTION analysis performed with the random forest fitting. Here, ordinal models are tested on the dataset.
+This section of the project wants to add a step to the analysis of the dataset, and to the DIRECTION analysis performed with the random forest fitting. Here, **ordinal models** are tested on the dataset.
 These models are ideal when your dependent variable (your target) is categorical and has a natural ordering, exactly
 as the SPRENER and SPRACQUA targets.
-This ordered models measure the DIRECTION, the STRENGTH and the statistical significance of each association. It works on a RESTRICTED driver set of 38 background variables in three groups:
+This ordered models measure the **DIRECTION, the STRENGTH and the statistical significance** of each association. It works on a RESTRICTED driver set of 38 background variables in three groups:
 
 - **who you are** – sex, age, education, employment, income source, household type/size, marital status;
 - **what worries you** – the 15 "environmental problems that worry you" items;
 - **where you live** – region, macro-area, neighbourhood problems and services.
 
-The 8 "sibling" behaviour items from the same battery as the targets are EXCLUDED, so the script does not simply predict one habit with its mirror habits. Every driver is standardised (mean 0, SD 1) so that all effects are comparable "per 1 SD".
+>**IMPORTANT**: The eight sibling behaviour variables from the same survey battery as the target variable are excluded. This prevents the models from trivially predicting one behaviour using closely related behaviours from the same Sustainability Behaviours section of the questionnaire.
+Feature importance analyses using Random Forests showed that these sibling behaviours were among the strongest predictors. To better understand the underlying drivers of sustainability behaviours, rather than simply exploiting correlations within the same survey section, these variables were removed from the dataset. This is one of the main findings of the project.
+In this revised analysis, all predictor variables are standardised (mean = 0, standard deviation = 1), making all estimated effects directly comparable on a per-standard-deviation basis.
 
 The pipeline has 4 phases; each one writes its own TXT/PNG into [results/explanatory/](results/explanatory/):
 
@@ -158,11 +162,11 @@ The pipeline has 4 phases; each one writes its own TXT/PNG into [results/explana
 
 Notably, environmental-concern attitudes rank low (`CAMCLI`, "worried: climate change", is ~48/65) and spatial/SES variables are absent from the top: the profile is behavioural + trust-based, not attitude- or geography-driven.
 
-**4. Direction.** No-care for energy/water respondents (level 4) show lower institutional trust, fewer books, and lower life satisfaction. The six consumption behaviours rise monotonically with the no-care level, meaning less-care respondents report doing them less often (reading labels, buying local/organic, avoiding noisy driving, using transport alternatives). Age is non-monotonic: the high-care group is the oldest, and level 4 sits near the average.
+**4. Direction.** No-care for energy/water respondents (level 4) show lower institutional trust, fewer books, and lower life satisfaction. The six consumption behaviours rise monotonically with the no-care level, meaning less-care respondents report doing them less often (reading labels, buying local/organic, avoiding noisy driving, using transport alternatives). Age is non-monotonic: the high-care group is the oldest, and level 4 sits near the average. [5_rf_fitting.py](5_rf_fitting.py)
 
-**5. An exception: USAGETT.** Three items in the behaviours battery are not phrased as "pay attention to ...": `GCARTE` (throwing paper/cardboard in the street), `DOPFIL` (parking in double file), and `USAGETT` (using single-use/disposable products). The first two behave as expected for "poor behaviour" items: they show a **negative** association with the targets, so respondents who care less about water/energy report doing these things more often. `USAGETT` is the anomaly: its association with the targets is **positive**, i.e. it moves against the typical "good behaviour" gradient, so at face value the least-care respondents would be the ones using disposable products *less* often. Within an otherwise highly coherent pattern, `USAGETT` is a clear exception.
+**5. An exception: USAGETT.** Three items in the behaviours battery are not phrased as "pay attention to ...": `GCARTE` (throwing paper/cardboard in the street), `DOPFIL` (parking in double file), and `USAGETT` (using single-use/disposable products). The first two behave as expected for "poor behaviour" items: they show a **negative** association with the targets, so respondents who care less about water/energy report doing these things more often. `USAGETT` is the anomaly: its association with the targets is **positive**, i.e. it moves against the typical "good behaviour" gradient, so at face value the least-care respondents would be the ones using disposable products *less* often. Within an otherwise highly coherent pattern, `USAGETT` is a clear exception. [5_rf_fitting.py](5_rf_fitting.py)
 
-**6. Consistency between the two stages.** Script 3 already highlighted the coherent gradient of ALOCAL, ETICHET, BIOLOG, ARUMOR, and USAGETT across target classes, and flagged `QTSALE` (attention to salt intake) as a weaker, partly different pattern - dietary/health-related rather than environmental. Script 5 confirms that shared gradient on a far larger feature set, adds the trust and cultural-capital blocks, and isolates USAGETT as the one behavioural item that goes against the good-behaviour gradient.
+**6. Consistency between the two stages.** Script 3 [3_exploratory_analysis.py](3_exploratory_analysis.py) already highlighted the coherent gradient of ALOCAL, ETICHET, BIOLOG, ARUMOR, and USAGETT across target classes, and flagged `QTSALE` (attention to salt intake) as a weaker, partly different pattern - dietary/health-related rather than environmental. Script 5 [5_rf_fitting.py](5_rf_fitting.py) confirms that shared gradient on a far larger feature set, adds the trust and cultural-capital blocks, and isolates USAGETT as the one behavioural item that goes against the good-behaviour gradient.
 
 Note that this screening runs on the ANOVA-reduced matrix (65 features), which contains almost no SOCIO/ATTITUDES/SPATIAL drivers. Those drivers are examined directly in script 6 (points 8-9 below).
 
@@ -175,7 +179,7 @@ Note that this screening runs on the ANOVA-reduced matrix (65 features), which c
 - The spatial block is the weakest of the three (smallest block-level |SHAP| sums); only region and macro-area consistently matter, while heavy traffic and recycling-station presence lean toward LESS care.
 - The ordinal and binary models agree in sign everywhere both are significant, so the results are robust to the model choice. (findings from the explanatory models [6_explanatory_models.py](6_explanatory_models.py))
 
-**9. Putting it all together.** Script 5 (65 features) says the strongest correlates are the sibling consumption behaviours (reading labels, buying local/organic, transport alternatives, avoiding disposable products) plus institutional trust and cultural capital. Script 6 (driver blocks) says that among "who you are / what worries you / where you live", the profile is OLDER and ENVIRONMENTALLY-WORRIED, with living-area factors secondary.
+**9. Putting it all together.** Script 5 [5_rf_fitting.py](5_rf_fitting.py) (with reduced features) says the strongest correlates are the sibling consumption behaviours (reading labels, buying local/organic, transport alternatives, avoiding disposable products) plus institutional trust and cultural capital. Script 6 [6_explanatory_models.py](6_explanatory_models.py) analyzing driver blocks says that among "who you are / what worries you / where you live", the profile is OLDER and ENVIRONMENTALLY-WORRIED, with living-area factors secondary.
 
 The overall conclusion stands: saving water and energy does not behave like an isolated outcome - it is embedded in a broader pattern of sustainable consumption, everyday habits, and socio-demographic/spatial conditions.
 
